@@ -1,9 +1,12 @@
 // References:
 // https://www.youtube.com/watch?v=aNbgrqRuoiE
 
+// pulse css effect: https://codepen.io/riccardoscalco/pen/GZzZRz
 
 import * as d3 from 'd3';
 import * as topojson from 'topojson';
+
+import './styles.css';
 
 // I would normally want to load this bunch of data asynchronously using d3.json
 import worldMapData from './50m.json';
@@ -59,5 +62,5 @@ cities.selectAll("circle")
 	.append("circle")
 	.attr("cx", function (d) { return projection(d)[0]; })
 	.attr("cy", function (d) { return projection(d)[1]; })
-	.attr("r", "8px")
-	.attr("fill", "red")
+	.attr("r", "5px")
+  .attr("class", "city")

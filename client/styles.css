@@ -1,0 +1,11 @@
+.city {
+  fill: red;
+  transform-origin: 50% 50%;
+  animation: appear 0.4s ease-in-out;
+}
+
+@keyframes appear {
+  from {
+    transform: scale(0.1);
+  }
+}
