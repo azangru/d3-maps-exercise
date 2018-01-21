@@ -1,6 +1,10 @@
 // References:
+// Helloworld examples:
+// - https://github.com/larkintuckerllc/hello-d3
+//
+// Building maps:
 // https://www.youtube.com/watch?v=aNbgrqRuoiE
-
+//
 // pulse css effect: https://codepen.io/riccardoscalco/pen/GZzZRz
 
 import * as d3 from 'd3';
@@ -33,6 +37,14 @@ let newYorkCoordinates = [-73.99772644042969, 40.73268976628568];
 let copenhagenCoordinates = [12.571792602539062, 55.684746298950444];
 let londonCoordinates = [-0.14350891113281247, 51.50746034612789];
 
+let citiesCoordinates = [
+  moscowCoordinates,
+  newYorkCoordinates,
+  copenhagenCoordinates,
+  londonCoordinates
+]
+
+
 let svg = d3.select('main')
   .append('svg')
   .attr('height', height)
@@ -54,13 +66,30 @@ svg.selectAll('.country')
   .attr('d', path)
 
 
-// add circles to the map
-let cities = svg.append('g');
+let cities = svg.append('g'); // group for city circles
+let cityRadius = 5;
 
-cities.selectAll("circle")
-	.data([moscowCoordinates, newYorkCoordinates, copenhagenCoordinates, londonCoordinates]).enter()
-	.append("circle")
-	.attr("cx", function (d) { return projection(d)[0]; })
-	.attr("cy", function (d) { return projection(d)[1]; })
-	.attr("r", "5px")
-  .attr("class", "city")
+function updateCitiesData() {
+  let randomCityIndex = Math.floor(Math.random() * citiesCoordinates.length);
+  return [citiesCoordinates[randomCityIndex]];
+}
+
+function updateCities(coordinates) {
+  // removes previously rendered circles; that's a temporary hack
+  let citiesSelection = cities.selectAll("circle")
+    .remove();
+
+  citiesSelection = cities.selectAll("circle").data(coordinates);
+
+  citiesSelection.enter()
+  	.append("circle")
+  	.attr("cx", function (d) { return projection(d)[0] - cityRadius / 2; })
+  	.attr("cy", function (d) { return projection(d)[1] - cityRadius / 2 ; })
+  	.attr("r", cityRadius)
+    .attr("class", "city");
+}
+
+setInterval(() => {
+  let cities = updateCitiesData();
+  updateCities(cities);
+}, 1000);
